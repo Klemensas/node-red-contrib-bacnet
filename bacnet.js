@@ -168,30 +168,25 @@ module.exports = function (RED) {
             RED.nodes.createNode(this, config);
             this.subscription = null;
             this.server = RED.nodes.getNode(config.server);
-            this.defaults = config;
-            this.on('input', this.onInput);
+            this.subscribeProperty(config)
+
             this.on('close', this.unsubscribe);
         }
 
-        onInput(input) {
-            const { address, objectType, objectInstance, propertyId, arrayIndex, subscribeId, issueConfirmedNotifications } = Object.assign({}, this.defaults, input.device);
+        subscribeProperty(config) {
+            const { address, objectType, objectInstance, propertyId, arrayIndex, subscribeId, issueConfirmedNotifications } = config;
 
             const device = { type: objectType, instance: objectInstance };
             const property = { propertyIdentifier: propertyId, propertyArrayIndex: arrayIndex };
 
-            // Unsubscribe before subscribing again
-            this.unsubscribe()
-                .then(() => this.server.connection.subscribeProperty(
-                    address,
-                    device,
-                    property,
-                    subscribeId,
-                    issueConfirmedNotifications,
-                    (payload) => {
-                        const message = Object.assign({}, input, { payload: payload })
-                        this.send(message);
-                    })
-                )
+            this.server.connection.subscribeProperty(
+                address,
+                device,
+                property,
+                subscribeId,
+                issueConfirmedNotifications,
+                (payload) => this.send({ payload: payload })
+            )
                 .then(() => this.subscription = {
                     address: address,
                     device: device,
@@ -226,29 +221,23 @@ module.exports = function (RED) {
             RED.nodes.createNode(this, config);
             this.subscription = null;
             this.server = RED.nodes.getNode(config.server);
-            this.defaults = config;
-            this.on('input', this.onInput);
+            this.subscribeCOV(config);
+
             this.on('close', this.unsubscribe);
         }
 
-        onInput(input) {
-            const { address, objectType, objectInstance, subscribeId, issueConfirmedNotifications, lifetime } = Object.assign({}, this.defaults, input.device);
-
+        subscribeCOV(config) {
+            const { address, objectType, objectInstance, subscribeId, issueConfirmedNotifications, lifetime } = config;
             const device = { type: objectType, instance: objectInstance };
 
-            // Unsubscribe before subscribing again
-            this.unsubscribe()
-                .then(() => this.server.connection.subscribeCOV(
-                    address,
-                    device,
-                    subscribeId,
-                    issueConfirmedNotifications,
-                    lifetime,
-                    (payload) => {
-                        const message = Object.assign({}, input, { payload: payload })
-                        this.send(message);
-                    })
-                )
+            this.server.connection.subscribeCOV(
+                address,
+                device,
+                subscribeId,
+                issueConfirmedNotifications,
+                lifetime,
+                (payload) => this.send({ payload: payload })
+            )
                 .then(() => this.subscription = {
                     address: address,
                     device: device,

@@ -1133,7 +1133,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="bacnet-subscribe-property">
-    <p>The <code>subscribeProperty</code> command subscribes to a specified objects single properties changes. It accepts an input whose device property will override the properties set here.</p>
+    <p>The <code>subscribeProperty</code> command subscribes to a specified objects single properties changes.</p>
     <ul>
         <li><code>address</code> <em>[string]</em> - IP address of the target device.</li>
         <li><code>objectType</code> <em>[number]</em> - The BACNET object type to read.</li>
@@ -1152,21 +1152,21 @@
         defaults: {
             address: {
                 value: '',
-                required: false
+                required: true
             },
             objectType: {
                 value: '',
-                required: false,
+                required: true,
                 validate: RED.validators.number()
             },
             objectInstance: {
                 value: '',
-                required: false,
+                required: true,
                 validate: RED.validators.number()
             },
             propertyId: {
                 value: '',
-                required: false,
+                required: true,
                 validate: RED.validators.number()
             },
             arrayIndex: {
@@ -1174,19 +1174,19 @@
             },
             subscribeId: {
                 value: '',
-                required: false,
+                required: true,
                 validate: RED.validators.number()
             },
             issueConfirmedNotifications: {
                 value: false,
-                required: false
+                required: true
             },
             server: {
                 value: '',
                 type: 'bacnet-server'
             }
         },
-        inputs: 1,
+        inputs: 0,
         outputs: 1,
         icon: 'automation.gif',
         paletteLabel: 'SubscribeCOVProperty',
@@ -1254,7 +1254,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="bacnet-subscribe-cov">
-    <p>The <code>subscribeCOV</code> command subscribes to a specified objects changes. It accepts an input whose device property will override the properties set here.</p>
+    <p>The <code>subscribeCOV</code> command subscribes to a specified objects changes.</p>
     <ul>
         <li><code>address</code> <em>[string]</em> - IP address of the target device.</li>
         <li><code>objectType</code> <em>[number]</em> - The BACNET object type to read.</li>
@@ -1272,30 +1272,30 @@
         defaults: {
             address: {
                 value: '',
-                required: false
+                required: true
             },
             objectType: {
                 value: '',
-                required: false,
+                required: true,
                 validate: RED.validators.number()
             },
             objectInstance: {
                 value: '',
-                required: false,
+                required: true,
                 validate: RED.validators.number()
             },
             subscribeId: {
                 value: '',
-                required: false,
+                required: true,
                 validate: RED.validators.number()
             },
             issueConfirmedNotifications: {
                 value: false,
-                required: false,
+                required: true,
             },
             lifetime: {
                 value: 0,
-                required: false,
+                required: true,
                 validate: RED.validators.number()
             },
             server: {
@@ -1303,7 +1303,7 @@
                 type: 'bacnet-server'
             }
         },
-        inputs: 1,
+        inputs: 0,
         outputs: 1,
         icon: 'automation.gif',
         paletteLabel: 'SubscribeCOV',
